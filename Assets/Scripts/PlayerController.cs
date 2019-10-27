@@ -12,6 +12,12 @@ public class PlayerController : MonoBehaviour
 
     bool isJumping = false;
     bool isCrouching = false;
+    bool isShooting = false;
+    public bool IsJumping { get => isJumping; }
+    public bool IsCrouching { get => isCrouching; }
+    public bool IsShooting { get => isShooting; set => isShooting = value; }
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -21,7 +27,11 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        horizontalMove = Input.GetAxisRaw("Horizontal") * speed;
+        if (!gameObject.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("PlayerShoot")
+        && !gameObject.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("PlayerCrouchShoot"))
+            horizontalMove = Input.GetAxisRaw("Horizontal") * speed;
+        else
+            horizontalMove = 0f;
         animator.SetFloat("speed_f", Mathf.Abs(horizontalMove));
 
         if (Input.GetButtonDown("Jump"))
