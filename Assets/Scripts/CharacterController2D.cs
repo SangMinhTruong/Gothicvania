@@ -19,25 +19,29 @@ public class CharacterController2D : MonoBehaviour
 	private bool m_FacingRight = true;  // For determining which way the player is currently facing.
 	private Vector3 m_Velocity = Vector3.zero;
 
-	[Header("Events")]
-	[Space]
-
+    [Header("Events")]
+    [Space]
+   // Transform Gunpoint;
+    //public Transform gunCrouchPoint;
 	public UnityEvent OnLandEvent;
-
+    Vector3 normalGun= new Vector3(0.264f,0.084f,0);
+    Vector3 crouchGun = new Vector3();
 	[System.Serializable]
 	public class BoolEvent : UnityEvent<bool> { }
 
 	public BoolEvent OnCrouchEvent;
 	private bool m_wasCrouching = false;
-
+    public Animator m_anim;
 	private void Awake()
 	{
 		m_Rigidbody2D = GetComponent<Rigidbody2D>();
-
-		if (OnLandEvent == null)
+        m_anim = GetComponent<Animator>();
+        if (OnLandEvent == null)
 			OnLandEvent = new UnityEvent();
+       // Gunpoint = transform.Find("Gunpoint");
+        //crouchGun = Gunpoint.position + new Vector3(0, -0.2f, 0);
 
-		if (OnCrouchEvent == null)
+        if (OnCrouchEvent == null)
 			OnCrouchEvent = new BoolEvent();
 	}
 
@@ -65,13 +69,14 @@ public class CharacterController2D : MonoBehaviour
 	}
 
 
-	public void Move(float move, bool crouch, bool jump)
+	public void Move(float move, bool crouch, bool jump,bool attack)
 	{
 		// If crouching, check to see if the character can stand up
 		if (!crouch)
 		{
-			// If the character has a ceiling preventing them from standing up, keep them crouching
-			if (Physics2D.OverlapCircle(m_CeilingCheck.position, k_CeilingRadius, m_WhatIsGround))
+            
+            // If the character has a ceiling preventing them from standing up, keep them crouching
+            if (Physics2D.OverlapCircle(m_CeilingCheck.position, k_CeilingRadius, m_WhatIsGround))
 			{
 				crouch = true;
 			}
@@ -79,7 +84,11 @@ public class CharacterController2D : MonoBehaviour
 
         // Set target velocity to 0 on x
         Vector3 targetVelocity = new Vector2(0f, m_Rigidbody2D.velocity.y);
-
+       if(attack)
+        {
+            move = 0;
+        }
+        m_anim.SetBool("isAttacking", attack);
         //only control the player if grounded or airControl is turned on
         if (m_Grounded || m_AirControl)
 		{
@@ -87,7 +96,8 @@ public class CharacterController2D : MonoBehaviour
 			// If crouching
 			if (crouch)
 			{
-				if (!m_wasCrouching)
+                
+                if (!m_wasCrouching)
 				{
 					m_wasCrouching = true;
 					OnCrouchEvent.Invoke(true);
@@ -103,8 +113,9 @@ public class CharacterController2D : MonoBehaviour
             }
             else
 			{
-				// Enable the collider when not crouching
-				if (m_CrouchDisableCollider != null)
+                
+                // Enable the collider when not crouching
+                if (m_CrouchDisableCollider != null)
 					m_CrouchDisableCollider.enabled = true;
 
 				if (m_wasCrouching)
@@ -132,6 +143,7 @@ public class CharacterController2D : MonoBehaviour
 				// ... flip the player.
 				Flip();
 			}
+            
 		}
 		// If the player should jump...
 		if (m_Grounded && jump)
@@ -148,6 +160,9 @@ public class CharacterController2D : MonoBehaviour
 		// Switch the way the player is labelled as facing.
 		m_FacingRight = !m_FacingRight;
 
-        transform.Rotate(0f, 180f, 0f);
+		// Multiply the player's x local scale by -1.
+		Vector3 theScale = transform.localScale;
+		theScale.x *= -1;
+		transform.localScale = theScale;
 	}
 }

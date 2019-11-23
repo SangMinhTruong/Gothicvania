@@ -12,13 +12,12 @@ public class PlayerController : MonoBehaviour
 
     bool isJumping = false;
     bool isCrouching = false;
-    bool isShooting = false;
-    public bool IsJumping { get => isJumping; }
-    public bool IsCrouching { get => isCrouching; }
-    public bool IsShooting { get => isShooting; set => isShooting = value; }
-
-
+    bool isAttacking;
     // Start is called before the first frame update
+    private void Awake()
+    {
+        controller = GetComponent<CharacterController2D>();
+    }
     void Start()
     {
 
@@ -27,11 +26,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!gameObject.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("PlayerShoot")
-        && !gameObject.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("PlayerCrouchShoot"))
-            horizontalMove = Input.GetAxisRaw("Horizontal") * speed;
-        else
-            horizontalMove = 0f;
+        horizontalMove = Input.GetAxisRaw("Horizontal") * speed;
         animator.SetFloat("speed_f", Mathf.Abs(horizontalMove));
 
         if (Input.GetButtonDown("Jump"))
@@ -39,7 +34,7 @@ public class PlayerController : MonoBehaviour
             isJumping = true;
             animator.SetBool("isJumping_b", true);
         }
-
+        
         if (Input.GetButtonDown("Crouch"))
         {
             isCrouching = true;
@@ -50,7 +45,9 @@ public class PlayerController : MonoBehaviour
     }
     void FixedUpdate()
     {
-        controller.Move(horizontalMove * Time.fixedDeltaTime, isCrouching, isJumping);
+        isAttacking = Input.GetButton("Fire1");
+        
+        controller.Move(horizontalMove * Time.fixedDeltaTime, isCrouching, isJumping,isAttacking);
     }
     public void OnLanding()
     {
