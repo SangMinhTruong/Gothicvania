@@ -6,6 +6,7 @@ using Pathfinding;
 [RequireComponent(typeof(Seeker))]
 public class EnemyAI : MonoBehaviour
 {
+    private PlayerStat playerStat;
     private bool facingLeft = true;
     // What to chase?
     public Transform target;
@@ -37,17 +38,18 @@ public class EnemyAI : MonoBehaviour
     public float searchRange = 2f;
     void Start()
     {
+        playerStat = PlayerStat.instance;
         seeker = GetComponent<Seeker>();
         rb = GetComponent<Rigidbody2D>();
 
         if (target == null)
         {
+            target = GameObject.FindGameObjectWithTag("Player").transform;
             if (Vector3.SqrMagnitude(this.transform.position - target.position) < searchRange * searchRange)
             {
                 searchPlayer = true;
                 StartCoroutine(SearchPlayer());
             }
-
             return;
         }
         
@@ -109,15 +111,16 @@ public class EnemyAI : MonoBehaviour
 
         if (target == null)
         {
-            if (Vector3.SqrMagnitude(this.transform.position - target.position) < searchRange * searchRange)
-            {
-                searchPlayer = true;
+           // if (Vector3.SqrMagnitude(this.transform.position - target.position) < searchRange * searchRange)
+            //{
+             //   searchPlayer = true;
                 StartCoroutine(SearchPlayer());
-            }
-
+            //}
+            target = GameObject.FindGameObjectWithTag("Player").transform;
             return;
         }
-        if(this.transform.rotation.z!=0)
+
+        if (this.transform.rotation.z != 0)
         {
             Quaternion quaternion = transform.rotation;
             quaternion.z = 0;

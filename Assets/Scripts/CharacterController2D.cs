@@ -32,15 +32,16 @@ public class CharacterController2D : MonoBehaviour
 	public BoolEvent OnCrouchEvent;
 	private bool m_wasCrouching = false;
     public Animator m_anim;
+    private AudioManager audioManager;
 	private void Awake()
 	{
 		m_Rigidbody2D = GetComponent<Rigidbody2D>();
         m_anim = GetComponent<Animator>();
         if (OnLandEvent == null)
 			OnLandEvent = new UnityEvent();
-       // Gunpoint = transform.Find("Gunpoint");
+        // Gunpoint = transform.Find("Gunpoint");
         //crouchGun = Gunpoint.position + new Vector3(0, -0.2f, 0);
-
+        audioManager = AudioManager.instance;
         if (OnCrouchEvent == null)
 			OnCrouchEvent = new BoolEvent();
 	}
@@ -150,6 +151,7 @@ public class CharacterController2D : MonoBehaviour
 		{
 			// Add a vertical force to the player.
 			m_Grounded = false;
+            audioManager.PlaySound("Jump");
 			m_Rigidbody2D.AddForce(new Vector2(0f, m_JumpForce));
 		}
 	}

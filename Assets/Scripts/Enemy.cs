@@ -3,7 +3,8 @@ using System.Collections;
 
 public class Enemy : MonoBehaviour
 {
-
+    public PlayerStat playerStat;
+    public bool isBoss;
     [System.Serializable]
     public class EnemyStats
     {
@@ -16,7 +17,7 @@ public class Enemy : MonoBehaviour
             set { _curHealth = Mathf.Clamp(value, 0, maxHealth); }
         }
 
-        public int damage = 40;
+        public int damage = 25;
 
         public void Init()
         {
@@ -25,26 +26,41 @@ public class Enemy : MonoBehaviour
     }
 
     public EnemyStats stats = new EnemyStats();
-    private Animation myAnim;
+    private Animator myAnim;
     //public AnimationClip deathParticles;
     public Transform deathAnim;
     public float shakeAmt = 0.1f;
     public float shakeLength = 0.1f;
-
+    AudioManager audioManager;
     //[Header("Optional: ")]
     [SerializeField]
     private Status statusIndicator;
-
+    public Transform healthPot;
+    public Transform speedPot;
+    public Transform attackSpeedPot;
+    public Transform attackPot;
+    int dropChance = 4;
+    int random;
+    int potType;
+    void Awake()
+    {
+        audioManager = AudioManager.instance;
+    }
     void Start()
     {
-        myAnim = GetComponent<Animation>();
+        playerStat = PlayerStat.instance;
+        myAnim = GetComponent<Animator>();
         stats.Init();
        // myAnim["deathParticles"].wrapMode = WrapMode.Once;
         if (statusIndicator != null)
         {
             statusIndicator.SetHealth(stats.curHealth, stats.maxHealth);
         }
-
+        if(isBoss)
+        {
+            stats.maxHealth = 1000;
+            stats.damage = 50;
+        }
         //if (deathParticles == null)
         //{
         //    Debug.LogError("No death particles referenced on Enemy");
@@ -56,10 +72,38 @@ public class Enemy : MonoBehaviour
         stats.curHealth -= damage;
         if (stats.curHealth <= 0)
         {
-            //GameMaster.KillEnemy(this);
-            // myAnim.Play("deathParticles");
-            Instantiate(deathAnim, this.transform.position, this.transform.rotation);
-            Destroy(this.gameObject);
+            random = Random.Range(1, 5);
+            if(random==dropChance)
+            {
+                potType = Random.Range(1, 5);
+                switch(potType)
+                {
+                    case 1:
+                        Instantiate(healthPot, transform.position, transform.rotation);
+                        break;
+                    case 2:
+                        Instantiate(speedPot, transform.position, transform.rotation);
+                        break;
+                    case 3:
+                        Instantiate(attackPot, transform.position, transform.rotation);
+                        break;
+                    case 4:
+                        Instantiate(attackSpeedPot, transform.position, transform.rotation);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            audioManager.PlaySound("Grunt");
+            playerStat.point += Random.Range(300, 500);
+                //GameMaster.KillEnemy(this);
+                // myAnim.Play("deathParticles");
+                
+                Instantiate(deathAnim, this.transform.position, this.transform.rotation);
+                Destroy(this.gameObject);
+            
+            
+            
             
         }
 
@@ -75,7 +119,7 @@ public class Enemy : MonoBehaviour
         if (_player != null)
         {
             _player.DamagePlayer(stats.damage);
-            DamageEnemy(10);
+            //DamageEnemy(10);
         }
     }
 }

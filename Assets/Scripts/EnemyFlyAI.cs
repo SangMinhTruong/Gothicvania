@@ -47,7 +47,7 @@ public class EnemyFlyAI : MonoBehaviour
                 searchPlayer = true;
                 StartCoroutine(SearchPlayer());
             }
-
+            target = GameObject.FindGameObjectWithTag("Player").transform;
             return;
         }
 
@@ -145,6 +145,7 @@ public class EnemyFlyAI : MonoBehaviour
             if (target.position.x - transform.position.x < 0)
             {
                 rb.AddForce(dir, fMode);
+                //rb.velocity = rb.velocity.normalized * speed;
                 if (!facingLeft)
                 {
                     Flip();
@@ -153,6 +154,7 @@ public class EnemyFlyAI : MonoBehaviour
             else
             {
                 rb.AddForce(dir, fMode);
+                //rb.velocity = rb.velocity.normalized * speed;
                 if (facingLeft)
                 {
                     Flip();

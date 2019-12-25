@@ -14,8 +14,8 @@ GameObject:
   - component: {fileID: 1610245301091301488}
   - component: {fileID: 5308392404328177649}
   - component: {fileID: 2022107282820445494}
-  - component: {fileID: -2564195388466623969}
-  m_Layer: 0
+  - component: {fileID: 3174263406185652130}
+  m_Layer: 11
   m_Name: Fire2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -73,7 +73,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 13
   m_Sprite: {fileID: 21300000, guid: 675365aa3ad6e43d68d9a1c619c7e63a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -129,7 +129,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 964311b8c42f3ae408527387f4b53b19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 2
+  speed: 5
 --- !u!50 &2022107282820445494
 Rigidbody2D:
   serializedVersion: 4
@@ -151,8 +151,8 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!70 &-2564195388466623969
-CapsuleCollider2D:
+--- !u!61 &3174263406185652130
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -164,6 +164,16 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_Size: {x: 0.25, y: 0.06}
-  m_Direction: 1
+  m_Offset: {x: 0.00302732, y: 0.0010081381}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 0.25, y: 0.06}
+    newSize: {x: 0.25, y: 0.06}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.22376323, y: 0.041853394}
+  m_EdgeRadius: 0

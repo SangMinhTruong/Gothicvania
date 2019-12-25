@@ -3,7 +3,17 @@ guid: ce2f961d022f79f47b65c033e1cdcdd3
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - deathAnim: {instanceID: 0}
+  - statusIndicator: {instanceID: 0}
+  - healthPot: {fileID: 248866787308722419, guid: 4e7ea9886b45db64eaa9b6a5c69214d1,
+      type: 3}
+  - speedPot: {fileID: 7034741826031592144, guid: 197a3d24b1c83e648accba21b53aad09,
+      type: 3}
+  - attackSpeedPot: {fileID: 8522160577152280194, guid: 58b94dee89463ba4aa035d56ec7cde0d,
+      type: 3}
+  - attackPot: {fileID: 8615860978365847781, guid: 7042744353c0f624bb3b27b5a8a053f5,
+      type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

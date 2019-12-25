@@ -3,7 +3,12 @@ guid: b7c0ec6f937f2684cbdcd0b4e4122057
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - controller: {instanceID: 0}
+  - animator: {instanceID: 0}
+  - rectTransform: {instanceID: 0}
+  - joystick: {fileID: 3881087803549984439, guid: ec536a7718376554185e4a856d5ae230,
+      type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

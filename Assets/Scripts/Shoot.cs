@@ -4,20 +4,42 @@ using UnityEngine;
 
 public class Shoot : MonoBehaviour
 {
-    public float fireRate = 0;
-    public int damage = 10;
+    public VariableJoystick variableJoystick;
+    public static Shoot instance;
+    public float fireRate = 1;
+   // public int damage = 10;
     public LayerMask WhatToHit;
     float FireTime = 0;
-    public float EffectSpawnRate = 2;
+    private GameObject jt;
+    //public Joystick joystick;
+    public float EffectSpawnRate = 1;
     float effectSpawnTime = 0;
     private bool isCrouching=false;
     Transform GunPooint;
     public Transform BulletPrefab;
     public Transform BulletLeftPrefab;
     private Vector2 Direction;
+    private PlayerController playerController;
+
+    //[SerializeField]
+   
+    void Start()
+    {
+        playerController = PlayerController.instance;
+    }
     // Start is called before the first frame update
     void Awake()
     {
+        jt = GameObject.FindGameObjectWithTag("JoyStick");
+        if(instance==null)
+        {
+            instance = this;
+        }
+        if(jt!=null)
+        {
+            //joystick = Joystick.FindObjectOfType(Joystick);
+            variableJoystick = jt.GetComponent<VariableJoystick>();
+        }
         GunPooint = transform.Find("Gunpoint");
         if (GunPooint == null)
         {
@@ -28,15 +50,18 @@ public class Shoot : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetButtonDown("Crouch"))
+        // else { GunPooint = transform.Find("Gunpoint"); }
+        Debug.Log("attack?" + PlayerController.isAttacking.ToString());
+        if (variableJoystick.Vertical<=-0.4f)//Input.GetButtonDown("Crouch"))
         {
+            
             //Debug.LogError("Why wont you change");
             // Direction = new Vector2(transform.position.x, transform.position.y);
             isCrouching = true;
+            Debug.Log("Sited"+isCrouching);
             GunPooint = transform.Find("gunCrouchPoint");
         }
-        // else { GunPooint = transform.Find("Gunpoint"); }
-        if (Input.GetButtonUp("Crouch"))
+        else //(joystick.Vertical>=-0.4f)
         {
             isCrouching = false;
             //Direction = new Vector2(transform.position.x, transform.position.y + 0.085f);
@@ -58,14 +83,15 @@ public class Shoot : MonoBehaviour
         {
             if (fireRate == 0)
             {
-                if (Input.GetButtonDown("Fire1"))
+                if (PlayerController.isAttacking)//Input.GetButtonDown("Fire1"))
                 {
+                    Debug.Log("Got 'em");
                     CrouchShooot(isCrouching);
                 }
             }
             else
             {
-                if (Input.GetButton("Fire1") && Time.time > FireTime)
+                if (PlayerController.isAttacking && Time.time > FireTime)
                 {
                     FireTime = Time.time + (1 / fireRate);
                     CrouchShooot(isCrouching);
@@ -76,14 +102,14 @@ public class Shoot : MonoBehaviour
         {
             if (fireRate == 0)
             {
-                if (Input.GetButtonDown("Fire1"))
+                if (PlayerController.isAttacking)
                 {
                     Shooot(isCrouching);
                 }
             }
             else
             {
-                if (Input.GetButton("Fire1") && Time.time > FireTime)
+                if (PlayerController.isAttacking && Time.time > FireTime)
                 {
                     FireTime = Time.time + (1 / fireRate);
                     Shooot(isCrouching);
@@ -132,16 +158,16 @@ public class Shoot : MonoBehaviour
             effectSpawnTime = Time.time + 1 / EffectSpawnRate;
         }
 
-        if (hit.collider != null)
-        {
-            Enemy enemy = hit.collider.GetComponent<Enemy>();
-            if(enemy!= null)
-            {
-                enemy.DamageEnemy(damage);
-            }
-            Debug.DrawLine(PorjStart, hit.point, Color.red);
-            Debug.Log("We hit " + hit.collider.name + "and did " + damage + "Damage");
-        }
+        //if (hit.collider != null)
+        //{
+        //    Enemy enemy = hit.collider.GetComponent<Enemy>();
+        //    if(enemy!= null)
+        //    {
+        //        enemy.DamageEnemy(damage);
+        //    }
+        //    Debug.DrawLine(PorjStart, hit.point, Color.red);
+        //   // Debug.Log("We hit " + hit.collider.name + "and did " + damage + "Damage");
+        //}
 
         //Debug.Log("Oh no");
         Debug.DrawLine(PorjStart,Direction,Color.red,200,false);
@@ -188,16 +214,16 @@ public class Shoot : MonoBehaviour
             effectSpawnTime = Time.time + 1 / EffectSpawnRate;
         }
 
-        if (hit2.collider != null)
-        {
-            Enemy enemy = hit2.collider.GetComponent<Enemy>();
-            if (enemy != null)
-            {
-                enemy.DamageEnemy(damage);
-            }
-            Debug.DrawLine(PorjStar, hit2.point, Color.red);
-            Debug.Log("We hit " + hit2.collider.name + "and did " + damage + "Damage");
-        }
+        //if (hit2.collider != null)
+        //{
+        //    Enemy enemy = hit2.collider.GetComponent<Enemy>();
+        //    if (enemy != null)
+        //    {
+        //        enemy.DamageEnemy(damage);
+        //    }
+        //    Debug.DrawLine(PorjStar, hit2.point, Color.red);
+        //   // Debug.Log("We hit " + hit2.collider.name + "and did " + damage + "Damage");
+        //}
 
         //Debug.Log("Oh no");
         Debug.DrawLine(PorjStar, Direct, Color.red, 200, false);

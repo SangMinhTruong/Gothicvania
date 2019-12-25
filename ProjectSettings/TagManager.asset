@@ -3,7 +3,15 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Enemy
+  - Menu
+  - Tutorial
+  - PauseMenu
+  - groundCheckPotion
+  - Ground
+  - JoyStick
+  - About
   layers:
   - Default
   - TransparentFX
@@ -16,9 +24,9 @@ TagManager:
   - Player
   - Ground
   - Enemy
-  - 
-  - 
-  - 
+  - Projectile
+  - Potions
+  - BossProjectile
   - 
   - 
   - 

@@ -284,7 +284,7 @@ GameObject:
   - component: {fileID: 2025364118131294069}
   m_Layer: 10
   m_Name: thing1
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -392,7 +392,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 4
+  m_Constraints: 0
 --- !u!61 &2025364118131294064
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -465,7 +465,7 @@ MonoBehaviour:
   fMode: 0
   pathIsEnded: 0
   nextWaypointDistance: 3
-  searchRange: 2
+  searchRange: 50
 --- !u!114 &2025364118131294069
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -478,13 +478,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce2f961d022f79f47b65c033e1cdcdd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isBoss: 0
   stats:
     maxHealth: 100
-    damage: 40
-  deathAnim: {fileID: 0}
+    damage: 25
+  deathAnim: {fileID: 4278670151646726616, guid: 4aad5982a98101343b0c0c78764ecb1e,
+    type: 3}
   shakeAmt: 0.1
   shakeLength: 0.1
   statusIndicator: {fileID: 2025364118012284107}
+  healthPot: {fileID: 248866787308722419, guid: 4e7ea9886b45db64eaa9b6a5c69214d1,
+    type: 3}
+  speedPot: {fileID: 7034741826031592144, guid: 197a3d24b1c83e648accba21b53aad09,
+    type: 3}
+  attackSpeedPot: {fileID: 8522160577152280194, guid: 58b94dee89463ba4aa035d56ec7cde0d,
+    type: 3}
+  attackPot: {fileID: 8615860978365847781, guid: 7042744353c0f624bb3b27b5a8a053f5,
+    type: 3}
 --- !u!1 &3903288556358504145
 GameObject:
   m_ObjectHideFlags: 0

@@ -11,7 +11,10 @@ public class PatrolAI : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        if(groundCheck==null)
+        {
+            groundCheck = GameObject.FindGameObjectWithTag("groundCheck").transform;
+        }
     }
 
     // Update is called once per frame

@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 427430280814556884}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.196, y: -0.062, z: 0.7}
+  m_LocalPosition: {x: -0.196, y: -0.062000006, z: 0.7}
   m_LocalScale: {x: 0.7788803, y: 0.7972574, z: 1}
   m_Children: []
   m_Father: {fileID: 6091136963224808442}
@@ -120,7 +120,7 @@ GameObject:
   - component: {fileID: 2373739258824786580}
   m_Layer: 10
   m_Name: spider1 1
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -268,14 +268,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce2f961d022f79f47b65c033e1cdcdd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isBoss: 0
   stats:
     maxHealth: 100
-    damage: 40
+    damage: 20
   deathAnim: {fileID: 4278670151646726616, guid: 4aad5982a98101343b0c0c78764ecb1e,
     type: 3}
   shakeAmt: 0.1
   shakeLength: 0.1
   statusIndicator: {fileID: 6091136963249925622}
+  healthPot: {fileID: 248866787308722419, guid: 4e7ea9886b45db64eaa9b6a5c69214d1,
+    type: 3}
+  speedPot: {fileID: 7034741826031592144, guid: 197a3d24b1c83e648accba21b53aad09,
+    type: 3}
+  attackSpeedPot: {fileID: 8522160577152280194, guid: 58b94dee89463ba4aa035d56ec7cde0d,
+    type: 3}
+  attackPot: {fileID: 8615860978365847781, guid: 7042744353c0f624bb3b27b5a8a053f5,
+    type: 3}
 --- !u!114 &2373739258824786580
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -288,8 +297,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46f5dd33c4a0bc245900902fd3888cc6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 5
-  distance: 5
+  speed: 1
+  distance: 100
   groundCheck: {fileID: 5751165282637428502}
 --- !u!1 &6091136963249925616
 GameObject:
