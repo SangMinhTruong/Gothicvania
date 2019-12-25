@@ -12,6 +12,7 @@ TagManager:
   - Ground
   - JoyStick
   - About
+  - Water
   layers:
   - Default
   - TransparentFX
@@ -27,7 +28,7 @@ TagManager:
   - Projectile
   - Potions
   - BossProjectile
-  - 
+  - Water
   - 
   - 
   - 
