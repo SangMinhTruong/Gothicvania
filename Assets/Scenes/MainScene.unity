@@ -828,7 +828,7 @@ TilemapCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 302619313}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
@@ -12500,6 +12500,24 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+--- !u!1 &364213508 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1263949875961307800, guid: 33e817e3784462c419c1d36b39dc3ebf,
+    type: 3}
+  m_PrefabInstance: {fileID: 1156706440}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &364213509
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 364213508}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4883545ee82f09f439fb109f991a27c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &374203456
 GameObject:
   m_ObjectHideFlags: 0
