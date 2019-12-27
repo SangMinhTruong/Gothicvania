@@ -4,7 +4,7 @@ using System.Collections;
 [RequireComponent(typeof(PlayerController))]
 public class Player : MonoBehaviour
 {
-    public int fallBoundary = -20;
+    public int fallBoundary = -10;
     public Animator mAnim;
     private AudioManager audioManager;
     //public static Player instance;

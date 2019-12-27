@@ -35,33 +35,21 @@ public class EnemyAI : MonoBehaviour
     private int currentWaypoint = 0;
     private bool searchPlayer = false;
 
-    public float searchRange = 2f;
+    public float searchRange = 5f;
     void Start()
     {
         playerStat = PlayerStat.instance;
         seeker = GetComponent<Seeker>();
         rb = GetComponent<Rigidbody2D>();
 
-
-        if (target != null)
-        {
-            if (Vector3.SqrMagnitude(this.transform.position - target.position) < searchRange * searchRange)
-            {
-                searchPlayer = true;
-                StartCoroutine(SearchPlayer());
-            }
-            // Start a new path to the target position, return the result to the OnPathComplete method
-            seeker.StartPath(transform.position, target.position, OnPathComplete);
-
-            StartCoroutine(UpdatePath());
-        }
-            
+        searchPlayer = true;
+        StartCoroutine(SearchPlayer());
     }
 
     IEnumerator SearchPlayer()
     {
-        GameObject searchResult=  GameObject.FindGameObjectWithTag("Player");
-        if (searchResult == null)
+        GameObject searchResult = GameObject.FindGameObjectWithTag("Player");
+        if (target == null)
         {
             yield return new WaitForSeconds(0.5f);
             StartCoroutine(SearchPlayer());
@@ -76,26 +64,15 @@ public class EnemyAI : MonoBehaviour
     }
     IEnumerator UpdatePath()
     {
-        if (target == null)
-        {
-            if (Vector3.SqrMagnitude(this.transform.position - target.position) < searchRange * searchRange)
-            {
-                searchPlayer = true;
-                StartCoroutine(SearchPlayer());
-            }
-
-            yield return false;
-        }
-
         if (target != null)
         {
             // Start a new path to the target position, return the result to the OnPathComplete method
             seeker.StartPath(transform.position, target.position, OnPathComplete);
 
             yield return new WaitForSeconds(1f / updateRate);
-            StartCoroutine(UpdatePath());
+            searchPlayer = true;
+            StartCoroutine(SearchPlayer());
         }
-            
     }
 
     public void OnPathComplete(Path p)
@@ -110,7 +87,7 @@ public class EnemyAI : MonoBehaviour
 
     void FixedUpdate()
     {
-
+        target = GameObject.FindGameObjectWithTag("Player")?.transform;
         if (target != null)
         {
             if (this.transform.rotation.z != 0)

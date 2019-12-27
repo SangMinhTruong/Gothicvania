@@ -40,28 +40,14 @@ public class EnemyFlyAI : MonoBehaviour
         seeker = GetComponent<Seeker>();
         rb = GetComponent<Rigidbody2D>();
 
-        if (target == null)
-        {
-            if (Vector3.SqrMagnitude(this.transform.position - target.position) < searchRange * searchRange)
-            {
-                searchPlayer = true;
-                StartCoroutine(SearchPlayer());
-            }
-            target = GameObject.FindGameObjectWithTag("Player").transform;
-            return;
-        }
-
-
-        // Start a new path to the target position, return the result to the OnPathComplete method
-        seeker.StartPath(transform.position, target.position, OnPathComplete);
-
-        StartCoroutine(UpdatePath());
+        searchPlayer = true;
+        StartCoroutine(SearchPlayer());
     }
 
     IEnumerator SearchPlayer()
     {
         GameObject searchResult = GameObject.FindGameObjectWithTag("Player");
-        if (searchResult == null)
+        if (target == null)
         {
             yield return new WaitForSeconds(0.5f);
             StartCoroutine(SearchPlayer());
@@ -76,18 +62,14 @@ public class EnemyFlyAI : MonoBehaviour
     }
     IEnumerator UpdatePath()
     {
-        if (target == null)
+        if (target != null)
         {
-            StartCoroutine(SearchPlayer());
+            // Start a new path to the target position, return the result to the OnPathComplete method
+            seeker.StartPath(transform.position, target.position, OnPathComplete);
 
-            yield return false;
+            yield return new WaitForSeconds(1f / updateRate);
+            StartCoroutine(UpdatePath());
         }
-
-        // Start a new path to the target position, return the result to the OnPathComplete method
-        seeker.StartPath(transform.position, target.position, OnPathComplete);
-
-        yield return new WaitForSeconds(1f / updateRate);
-        StartCoroutine(UpdatePath());
     }
 
     public void OnPathComplete(Path p)
@@ -103,72 +85,65 @@ public class EnemyFlyAI : MonoBehaviour
     void FixedUpdate()
     {
 
-        if (target == null)
+        target = GameObject.FindGameObjectWithTag("Player")?.transform;
+        if (target != null)
         {
-            //if (Vector3.SqrMagnitude(this.transform.position - target.position) < searchRange * searchRange)
-            //{
-            //    searchPlayer = true;
-                StartCoroutine(SearchPlayer());
-            //}
+            if (this.transform.rotation.z != 0)
+            {
+                Quaternion quaternion = transform.rotation;
+                quaternion.z = 0;
+                transform.rotation = quaternion;
+            }
+            //TODO: Always look at player?
 
-            return;
-        }
-        if (this.transform.rotation.z != 0)
-        {
-            Quaternion quaternion = transform.rotation;
-            quaternion.z = 0;
-            transform.rotation = quaternion;
-        }
-        //TODO: Always look at player?
-
-        if (path == null)
-            return;
-
-        if (currentWaypoint >= path.vectorPath.Count)
-        {
-            if (pathIsEnded)
+            if (path == null)
                 return;
 
-           //Debug.Log("End of path reached.");
-            pathIsEnded = true;
-            return;
-        }
-        pathIsEnded = false;
-
-        //Direction to the next waypoint
-        Vector3 dir = (path.vectorPath[currentWaypoint] - transform.position).normalized;
-        dir *= speed * Time.fixedDeltaTime;
-
-        //Move the AI
-        if (Vector3.SqrMagnitude(this.transform.position - target.position) < searchRange * searchRange)
-        {
-            if (target.position.x - transform.position.x < 0)
+            if (currentWaypoint >= path.vectorPath.Count)
             {
-                rb.AddForce(dir, fMode);
-                //rb.velocity = rb.velocity.normalized * speed;
-                if (!facingLeft)
+                if (pathIsEnded)
+                    return;
+
+                //Debug.Log("End of path reached.");
+                pathIsEnded = true;
+                return;
+            }
+            pathIsEnded = false;
+
+            //Direction to the next waypoint
+            Vector3 dir = (path.vectorPath[currentWaypoint] - transform.position).normalized;
+            dir *= speed * Time.fixedDeltaTime;
+
+            //Move the AI
+            if (Vector3.SqrMagnitude(this.transform.position - target.position) < searchRange * searchRange)
+            {
+                if (target.position.x - transform.position.x < 0)
                 {
-                    Flip();
+                    rb.AddForce(dir, fMode);
+                    //rb.velocity = rb.velocity.normalized * speed;
+                    if (!facingLeft)
+                    {
+                        Flip();
+                    }
+                }
+                else
+                {
+                    rb.AddForce(dir, fMode);
+                    //rb.velocity = rb.velocity.normalized * speed;
+                    if (facingLeft)
+                    {
+                        Flip();
+                    }
                 }
             }
-            else
+            //rb.AddForce(dir, fMode);
+            float dist = Vector3.Distance(transform.position, path.vectorPath[currentWaypoint]);
+            if (dist < nextWaypointDistance)
             {
-                rb.AddForce(dir, fMode);
-                //rb.velocity = rb.velocity.normalized * speed;
-                if (facingLeft)
-                {
-                    Flip();
-                }
+                currentWaypoint++;
+                return;
             }
         }
-        //rb.AddForce(dir, fMode);
-        float dist = Vector3.Distance(transform.position, path.vectorPath[currentWaypoint]);
-        if (dist < nextWaypointDistance)
-        {
-            currentWaypoint++;
-            return;
-        }
-
     }
     private void Flip()
     {
